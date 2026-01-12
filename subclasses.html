@@ -8,6 +8,7 @@
   <style>
     body {
       background-color: black;
+      color: white;
     }
     .first {
       text-align: center;
@@ -20,22 +21,19 @@
     }
   </style>
   <body>
-    <h1 class="first">Subclasses</h1>
-    <ul>
-      <li>Berserker</li>
-      <li>Champion</li>
-      <li>Devotion</li>
-      <li>Draconic</li>
-      <li>Evocation</li>
-      <li>Fiend</li>
-      <li>Hunter</li>
-      <li>Land</li>
-      <li>Life</li>
-      <li>Lore</li>
-      <li>Open-hand</li>
-      <li>Thief</li>
-    </ul>
+    <h1 class="first" id="SubclassTitle">Subclasses</h1>
+    <ul id="list"></ul>
     <script>
+      function Start() {
+        fetch("https://www.dnd5eapi.co/api/2014/")
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            console.log(data.results);
+          });
+        LoadData();
+      }
+      const TitleTxt = document.getElementById("SubclassTitle");
       const myHeaders = new Headers();
       myHeaders.append("Accept", "application/json");
 
@@ -44,10 +42,24 @@
         headers: myHeaders,
         redirect: "follow",
       };
-      fetch("https://www.dnd5eapi.co/api/2014/subclasses/", requestOptions)
-        .then((response) => response.text())
-        .then((result) => console.log(result))
-        .catch((error) => console.error(error));
+      function LoadData() {
+        TitleTxt.addEventListener("click", () => {
+          let lData = document.getElementById("list");
+          fetch("https://www.dnd5eapi.co/api/2014/subclasses/", requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+              console.log(result);
+
+              for (i of result.results) {
+                ListData = document.createElement("li");
+                ListData.innerHTML = `${i.name}`;
+                lData.append(ListData);
+              }
+            })
+            .catch((error) => console.error(error));
+        });
+      }
+      Start();
     </script>
   </body>
 </html>
