@@ -45,6 +45,7 @@
       function LoadData() {
         TitleTxt.addEventListener("click", () => {
           let lData = document.getElementById("list");
+          lData.innerHTML = "";
           fetch("https://www.dnd5eapi.co/api/2014/subclasses/", requestOptions)
             .then((response) => response.json())
             .then((result) => {
